@@ -5,9 +5,9 @@ OpenAI is the most widely used LLM provider, offering GPT-4 and GPT-3.5 models.
 """
 
 import time
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 
-from openai import AsyncOpenAI, APIError, RateLimitError, APIConnectionError
+from openai import APIConnectionError, APIError, AsyncOpenAI, RateLimitError
 
 from unified_ai.core.llm_client import (
     CompletionResult,
@@ -16,7 +16,6 @@ from unified_ai.core.llm_client import (
     ProviderError,
     ProviderName,
 )
-
 
 # OpenAI pricing per 1M tokens (as of Jan 2025)
 # https://openai.com/pricing
@@ -35,10 +34,10 @@ DEFAULT_PRICING = {"input": 5.00, "output": 15.00}
 class OpenAIClient(LLMClient):
     """
     OpenAI LLM provider.
-    
+
     OpenAI's GPT models are industry standard, with gpt-4o-mini
     offering excellent price/performance for most tasks.
-    
+
     Example:
         >>> client = OpenAIClient(api_key="...", model="gpt-4o-mini")
         >>> result = await client.complete([Message(role="user", content="Hello")])
@@ -48,7 +47,7 @@ class OpenAIClient(LLMClient):
     def __init__(self, api_key: str, model: str = "gpt-4o-mini"):
         """
         Initialize OpenAI client.
-        
+
         Args:
             api_key: OpenAI API key
             model: Model to use (default: gpt-4o-mini)
@@ -69,15 +68,15 @@ class OpenAIClient(LLMClient):
     ) -> CompletionResult:
         """
         Generate a completion using OpenAI.
-        
+
         Args:
             messages: Conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
-            
+
         Returns:
             CompletionResult with generated content
-            
+
         Raises:
             ProviderError: If OpenAI API fails
         """
@@ -143,15 +142,15 @@ class OpenAIClient(LLMClient):
     ) -> AsyncIterator[str]:
         """
         Stream a completion using OpenAI.
-        
+
         Args:
             messages: Conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
-            
+
         Yields:
             String chunks as generated
-            
+
         Raises:
             ProviderError: If OpenAI API fails
         """
@@ -186,11 +185,11 @@ class OpenAIClient(LLMClient):
     def estimate_cost(self, input_tokens: int, output_tokens: int) -> float:
         """
         Estimate cost for an OpenAI request.
-        
+
         Args:
             input_tokens: Number of input tokens
             output_tokens: Number of output tokens
-            
+
         Returns:
             Cost in USD
         """

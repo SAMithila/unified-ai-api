@@ -6,7 +6,7 @@ at competitive pricing.
 """
 
 import time
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 
 import google.generativeai as genai
 from google.api_core import exceptions as google_exceptions
@@ -18,7 +18,6 @@ from unified_ai.core.llm_client import (
     ProviderError,
     ProviderName,
 )
-
 
 # Gemini pricing per 1M tokens (as of Jan 2025)
 # https://ai.google.dev/pricing
@@ -35,10 +34,10 @@ DEFAULT_PRICING = {"input": 0.50, "output": 1.50}
 class GeminiClient(LLMClient):
     """
     Google Gemini LLM provider.
-    
+
     Gemini offers multimodal capabilities and competitive pricing.
     The flash models are particularly cost-effective.
-    
+
     Example:
         >>> client = GeminiClient(api_key="...", model="gemini-1.5-flash")
         >>> result = await client.complete([Message(role="user", content="Hello")])
@@ -48,7 +47,7 @@ class GeminiClient(LLMClient):
     def __init__(self, api_key: str, model: str = "gemini-1.5-flash"):
         """
         Initialize Gemini client.
-        
+
         Args:
             api_key: Google API key
             model: Model to use (default: gemini-1.5-flash)
@@ -62,16 +61,18 @@ class GeminiClient(LLMClient):
         """Get provider name."""
         return ProviderName.GEMINI
 
-    def _convert_messages(self, messages: list[Message]) -> tuple[str | None, list[dict]]:
+    def _convert_messages(
+        self, messages: list[Message]
+    ) -> tuple[str | None, list[dict]]:
         """
         Convert messages to Gemini format.
-        
+
         Gemini uses a different format: system instruction is separate,
         and messages use "user" and "model" roles.
-        
+
         Args:
             messages: Standard messages
-            
+
         Returns:
             Tuple of (system_instruction, history)
         """
@@ -96,15 +97,15 @@ class GeminiClient(LLMClient):
     ) -> CompletionResult:
         """
         Generate a completion using Gemini.
-        
+
         Args:
             messages: Conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
-            
+
         Returns:
             CompletionResult with generated content
-            
+
         Raises:
             ProviderError: If Gemini API fails
         """
@@ -115,9 +116,7 @@ class GeminiClient(LLMClient):
 
             # Create model with system instruction if provided
             model = (
-                genai.GenerativeModel(
-                    self.model, system_instruction=system_instruction
-                )
+                genai.GenerativeModel(self.model, system_instruction=system_instruction)
                 if system_instruction
                 else self._model
             )
@@ -203,15 +202,15 @@ class GeminiClient(LLMClient):
     ) -> AsyncIterator[str]:
         """
         Stream a completion using Gemini.
-        
+
         Args:
             messages: Conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
-            
+
         Yields:
             String chunks as generated
-            
+
         Raises:
             ProviderError: If Gemini API fails
         """
@@ -219,9 +218,7 @@ class GeminiClient(LLMClient):
             system_instruction, history = self._convert_messages(messages)
 
             model = (
-                genai.GenerativeModel(
-                    self.model, system_instruction=system_instruction
-                )
+                genai.GenerativeModel(self.model, system_instruction=system_instruction)
                 if system_instruction
                 else self._model
             )
@@ -268,11 +265,11 @@ class GeminiClient(LLMClient):
     def estimate_cost(self, input_tokens: int, output_tokens: int) -> float:
         """
         Estimate cost for a Gemini request.
-        
+
         Args:
             input_tokens: Number of input tokens
             output_tokens: Number of output tokens
-            
+
         Returns:
             Cost in USD
         """

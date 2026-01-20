@@ -9,7 +9,6 @@ from typing import Annotated
 
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, Request
-from fastapi.responses import StreamingResponse
 
 from unified_ai.api.schemas import CompletionRequest, CompletionResponse, ErrorResponse
 from unified_ai.core.fallback import AllProvidersFailedError, FallbackChain
@@ -65,7 +64,7 @@ async def create_completion(
 ) -> CompletionResponse:
     """
     Generate a completion for the given product and message.
-    
+
     This endpoint:
     1. Retrieves or creates the conversation session
     2. Adds the system prompt and user message
@@ -94,9 +93,7 @@ async def create_completion(
         session = Session(
             session_id=request.session_id,
             product=request.product,
-            messages=[
-                Message(role="system", content=product_config.system_prompt)
-            ],
+            messages=[Message(role="system", content=product_config.system_prompt)],
         )
 
     # Add user message
@@ -104,7 +101,11 @@ async def create_completion(
 
     # Determine parameters (request overrides > product defaults)
     max_tokens = request.max_tokens or product_config.max_tokens
-    temperature = request.temperature if request.temperature is not None else product_config.temperature
+    temperature = (
+        request.temperature
+        if request.temperature is not None
+        else product_config.temperature
+    )
 
     try:
         # Generate completion

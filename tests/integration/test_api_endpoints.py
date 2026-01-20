@@ -2,8 +2,6 @@
 Integration tests for API endpoints.
 """
 
-import pytest
-
 
 class TestHealthEndpoints:
     """Tests for health check endpoints."""

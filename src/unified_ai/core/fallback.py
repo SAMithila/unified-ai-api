@@ -7,9 +7,9 @@ the fallback chain for high availability.
 
 import asyncio
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Callable
 
 import structlog
 
@@ -64,11 +64,11 @@ class AllProvidersFailedError(Exception):
 def create_provider(provider_name: str, settings: Settings) -> LLMClient | None:
     """
     Create an LLM client for the given provider.
-    
+
     Args:
         provider_name: Name of the provider (groq, gemini, openai, anthropic)
         settings: Application settings
-        
+
     Returns:
         LLMClient instance or None if API key not configured
     """
@@ -99,10 +99,10 @@ def create_provider(provider_name: str, settings: Settings) -> LLMClient | None:
 def create_provider_chain(settings: Settings) -> list[LLMClient]:
     """
     Create a list of LLM clients in fallback order.
-    
+
     Args:
         settings: Application settings
-        
+
     Returns:
         List of LLMClient instances in fallback order
     """
@@ -132,10 +132,10 @@ def create_provider_chain(settings: Settings) -> list[LLMClient]:
 class FallbackChain:
     """
     Fallback chain for LLM providers.
-    
+
     Tries providers in order until one succeeds. Tracks attempts
     for observability and debugging.
-    
+
     Example:
         >>> chain = FallbackChain(providers=[groq_client, gemini_client])
         >>> result = await chain.complete(messages)
@@ -151,7 +151,7 @@ class FallbackChain:
     ):
         """
         Initialize fallback chain.
-        
+
         Args:
             providers: List of LLM clients in fallback order
             on_fallback: Optional callback when fallback occurs
@@ -167,15 +167,15 @@ class FallbackChain:
     ) -> FallbackResult:
         """
         Generate completion, falling back through providers on failure.
-        
+
         Args:
             messages: Conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
-            
+
         Returns:
             FallbackResult with completion and attempt history
-            
+
         Raises:
             AllProvidersFailedError: If all providers fail
         """
@@ -239,7 +239,7 @@ class FallbackChain:
     async def health_check(self) -> dict[str, bool]:
         """
         Check health of all providers.
-        
+
         Returns:
             Dict mapping provider name to health status
         """

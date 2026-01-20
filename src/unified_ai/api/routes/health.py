@@ -34,7 +34,7 @@ async def health_check(
 ) -> HealthResponse:
     """
     Check API health.
-    
+
     Returns the health status of the API and each configured LLM provider.
     """
     # Check provider health

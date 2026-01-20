@@ -2,8 +2,6 @@
 Unit tests for LLM client abstraction.
 """
 
-import pytest
-
 from unified_ai.core.llm_client import Message, ProviderName
 
 

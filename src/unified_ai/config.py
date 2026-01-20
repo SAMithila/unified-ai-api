@@ -41,7 +41,9 @@ class Settings(BaseSettings):
     # LLM Provider API Keys
     # =========================================================================
     groq_api_key: str | None = Field(default=None, description="Groq API key")
-    google_api_key: str | None = Field(default=None, description="Google Gemini API key")
+    google_api_key: str | None = Field(
+        default=None, description="Google Gemini API key"
+    )
     openai_api_key: str | None = Field(default=None, description="OpenAI API key")
     anthropic_api_key: str | None = Field(default=None, description="Anthropic API key")
 
@@ -111,7 +113,7 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     """
     Get cached settings instance.
-    
+
     Uses lru_cache to ensure settings are only loaded once.
     """
     return Settings()

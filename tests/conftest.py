@@ -5,9 +5,14 @@ Pytest configuration and fixtures.
 import pytest
 from fastapi.testclient import TestClient
 
-from unified_ai.main import create_app
-from unified_ai.core.llm_client import CompletionResult, LLMClient, Message, ProviderName
 from unified_ai.core.fallback import FallbackChain
+from unified_ai.core.llm_client import (
+    CompletionResult,
+    LLMClient,
+    Message,
+    ProviderName,
+)
+from unified_ai.main import create_app
 from unified_ai.storage.session import InMemorySessionStorage
 
 
@@ -37,6 +42,7 @@ class MockLLMClient(LLMClient):
     ) -> CompletionResult:
         if self._should_fail:
             from unified_ai.core.llm_client import ProviderError
+
             raise ProviderError(
                 provider=self.name,
                 message=self._fail_message,

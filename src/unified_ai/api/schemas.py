@@ -11,7 +11,6 @@ from pydantic import BaseModel, Field
 
 from unified_ai.core.products import ProductType
 
-
 # =============================================================================
 # Request Models
 # =============================================================================
@@ -20,9 +19,7 @@ from unified_ai.core.products import ProductType
 class CompletionRequest(BaseModel):
     """Request for the unified completion endpoint."""
 
-    product: ProductType = Field(
-        description="Which AI product to use for this request"
-    )
+    product: ProductType = Field(description="Which AI product to use for this request")
     session_id: str = Field(
         description="Session ID for conversation continuity",
         min_length=1,
@@ -136,9 +133,7 @@ class HealthResponse(BaseModel):
 
     status: str = Field(description="Overall health status")
     version: str = Field(description="API version")
-    providers: dict[str, bool] = Field(
-        description="Health status of each LLM provider"
-    )
+    providers: dict[str, bool] = Field(description="Health status of each LLM provider")
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 

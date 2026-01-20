@@ -8,7 +8,6 @@ storage backends for maintaining conversation state.
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Protocol
 
 from unified_ai.core.llm_client import Message
 from unified_ai.core.products import ProductType
@@ -65,7 +64,7 @@ class SessionStorage(ABC):
 class InMemorySessionStorage(SessionStorage):
     """
     In-memory session storage for development.
-    
+
     WARNING: Data is lost when the server restarts.
     Use Redis in production.
     """
@@ -73,7 +72,7 @@ class InMemorySessionStorage(SessionStorage):
     def __init__(self, max_sessions: int = 10000):
         """
         Initialize in-memory storage.
-        
+
         Args:
             max_sessions: Maximum sessions to store (LRU eviction)
         """
@@ -130,14 +129,14 @@ class InMemorySessionStorage(SessionStorage):
 class RedisSessionStorage(SessionStorage):
     """
     Redis session storage for production.
-    
+
     Provides persistent, distributed session storage.
     """
 
     def __init__(self, redis_url: str, ttl_seconds: int = 86400):
         """
         Initialize Redis storage.
-        
+
         Args:
             redis_url: Redis connection URL
             ttl_seconds: Session TTL in seconds (default: 24 hours)
@@ -237,10 +236,10 @@ class RedisSessionStorage(SessionStorage):
 def create_session_storage(redis_url: str | None = None) -> SessionStorage:
     """
     Create appropriate session storage based on configuration.
-    
+
     Args:
         redis_url: Redis URL (if None, uses in-memory storage)
-        
+
     Returns:
         SessionStorage instance
     """

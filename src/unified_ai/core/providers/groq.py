@@ -6,9 +6,9 @@ It's often the fastest and cheapest option for development.
 """
 
 import time
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 
-from groq import AsyncGroq, APIError, RateLimitError
+from groq import APIError, AsyncGroq, RateLimitError
 
 from unified_ai.core.llm_client import (
     CompletionResult,
@@ -17,7 +17,6 @@ from unified_ai.core.llm_client import (
     ProviderError,
     ProviderName,
 )
-
 
 # Groq pricing per 1M tokens (as of Jan 2025)
 # https://groq.com/pricing/
@@ -36,10 +35,10 @@ DEFAULT_PRICING = {"input": 0.50, "output": 0.50}
 class GroqClient(LLMClient):
     """
     Groq LLM provider.
-    
+
     Groq is known for extremely fast inference speeds using their
     custom LPU (Language Processing Unit) hardware.
-    
+
     Example:
         >>> client = GroqClient(api_key="...", model="llama-3.3-70b-versatile")
         >>> result = await client.complete([Message(role="user", content="Hello")])
@@ -49,7 +48,7 @@ class GroqClient(LLMClient):
     def __init__(self, api_key: str, model: str = "llama-3.3-70b-versatile"):
         """
         Initialize Groq client.
-        
+
         Args:
             api_key: Groq API key
             model: Model to use (default: llama-3.3-70b-versatile)
@@ -70,15 +69,15 @@ class GroqClient(LLMClient):
     ) -> CompletionResult:
         """
         Generate a completion using Groq.
-        
+
         Args:
             messages: Conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
-            
+
         Returns:
             CompletionResult with generated content
-            
+
         Raises:
             ProviderError: If Groq API fails
         """
@@ -140,15 +139,15 @@ class GroqClient(LLMClient):
     ) -> AsyncIterator[str]:
         """
         Stream a completion using Groq.
-        
+
         Args:
             messages: Conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
-            
+
         Yields:
             String chunks as generated
-            
+
         Raises:
             ProviderError: If Groq API fails
         """
@@ -183,11 +182,11 @@ class GroqClient(LLMClient):
     def estimate_cost(self, input_tokens: int, output_tokens: int) -> float:
         """
         Estimate cost for a Groq request.
-        
+
         Args:
             input_tokens: Number of input tokens
             output_tokens: Number of output tokens
-            
+
         Returns:
             Cost in USD
         """

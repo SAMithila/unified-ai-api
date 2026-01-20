@@ -150,13 +150,13 @@ Always preserve factual accuracy - never add information not in the original."""
 def get_product_config(product: ProductType) -> ProductConfig:
     """
     Get configuration for a product.
-    
+
     Args:
         product: The product type
-        
+
     Returns:
         ProductConfig for the product
-        
+
     Raises:
         KeyError: If product not found
     """
@@ -166,7 +166,7 @@ def get_product_config(product: ProductType) -> ProductConfig:
 def list_products() -> list[dict]:
     """
     List all available products.
-    
+
     Returns:
         List of product info dictionaries
     """

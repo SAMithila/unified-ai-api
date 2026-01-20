@@ -11,7 +11,6 @@ import structlog
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
 from unified_ai.api.routes import completion, health
@@ -47,7 +46,7 @@ logger = structlog.get_logger()
 async def lifespan(app: FastAPI):
     """
     Application lifespan handler.
-    
+
     Sets up and tears down application state:
     - Creates LLM provider chain
     - Creates session storage
@@ -85,7 +84,7 @@ async def lifespan(app: FastAPI):
 def create_app() -> FastAPI:
     """
     Create and configure the FastAPI application.
-    
+
     Returns:
         Configured FastAPI application
     """
@@ -156,6 +155,7 @@ print(response.json()["response"])
     # Serve frontend
     frontend_path = Path(__file__).parent.parent.parent.parent / "frontend"
     if frontend_path.exists():
+
         @app.get("/demo", include_in_schema=False)
         async def serve_demo():
             return FileResponse(frontend_path / "index.html")

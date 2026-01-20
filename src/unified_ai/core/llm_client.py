@@ -6,10 +6,10 @@ enabling easy swapping of providers and fallback chains.
 """
 
 from abc import ABC, abstractmethod
+from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import AsyncIterator
 
 
 class ProviderName(str, Enum):
@@ -68,7 +68,7 @@ class ProviderError(Exception):
 class LLMClient(ABC):
     """
     Abstract base class for LLM providers.
-    
+
     All provider implementations must inherit from this class and implement
     the required methods. This enables:
     - Easy provider swapping
@@ -80,7 +80,7 @@ class LLMClient(ABC):
     def __init__(self, api_key: str, model: str):
         """
         Initialize the LLM client.
-        
+
         Args:
             api_key: API key for the provider
             model: Model identifier to use
@@ -103,15 +103,15 @@ class LLMClient(ABC):
     ) -> CompletionResult:
         """
         Generate a completion from the given messages.
-        
+
         Args:
             messages: List of conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature (0.0 to 1.0)
-            
+
         Returns:
             CompletionResult with the generated content and metadata
-            
+
         Raises:
             ProviderError: If the provider fails
         """
@@ -126,15 +126,15 @@ class LLMClient(ABC):
     ) -> AsyncIterator[str]:
         """
         Stream a completion from the given messages.
-        
+
         Args:
             messages: List of conversation messages
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature (0.0 to 1.0)
-            
+
         Yields:
             String chunks as they are generated
-            
+
         Raises:
             ProviderError: If the provider fails
         """
@@ -144,11 +144,11 @@ class LLMClient(ABC):
     def estimate_cost(self, input_tokens: int, output_tokens: int) -> float:
         """
         Estimate the cost in USD for a request.
-        
+
         Args:
             input_tokens: Number of input tokens
             output_tokens: Number of output tokens
-            
+
         Returns:
             Estimated cost in USD
         """
@@ -157,7 +157,7 @@ class LLMClient(ABC):
     async def health_check(self) -> bool:
         """
         Check if the provider is healthy.
-        
+
         Returns:
             True if provider is available, False otherwise
         """

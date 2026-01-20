@@ -5,11 +5,11 @@ Unit tests for product definitions.
 import pytest
 
 from unified_ai.core.products import (
-    ProductType,
+    PRODUCTS,
     ProductConfig,
+    ProductType,
     get_product_config,
     list_products,
-    PRODUCTS,
 )
 
 
@@ -48,7 +48,9 @@ class TestProductConfig:
     def test_system_prompts_not_empty(self):
         """Ensure all system prompts have content."""
         for product, config in PRODUCTS.items():
-            assert len(config.system_prompt) > 50, f"{product} has empty/short system prompt"
+            assert len(config.system_prompt) > 50, (
+                f"{product} has empty/short system prompt"
+            )
 
 
 class TestGetProductConfig:
