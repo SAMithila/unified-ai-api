@@ -42,13 +42,13 @@ async def get_session_storage(request: Request) -> SessionStorage:
     summary="Generate AI completion",
     description="""
     Generate a completion using the specified AI product.
-    
+
     The completion endpoint is the core of the Unified AI API. It:
     - Routes to the appropriate product configuration
     - Maintains conversation history via sessions
     - Falls back through providers on failure
     - Tracks usage and costs
-    
+
     **Products Available:**
     - `chatbot`: General-purpose assistant
     - `writing_helper`: Grammar, clarity, and style suggestions
