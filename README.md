@@ -234,7 +234,6 @@ This project demonstrates:
 **Mithila** - AI/ML Engineer
 
 - GitHub: [@SAMithila](https://github.com/SAMithila)
-- Portfolio Project for FAANG Applications
 
 ## 📄 License
 
