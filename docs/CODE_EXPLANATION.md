@@ -55,8 +55,6 @@ class Settings(BaseSettings):
 | Scattered across code | Centralized in one place |
 | No IDE autocomplete | Full autocomplete support |
 
-### Interview Talking Point
-> "I used Pydantic Settings for configuration because it provides type safety, validation, and a single source of truth. This catches configuration errors at startup rather than runtime."
 
 ---
 
@@ -118,9 +116,6 @@ class CompletionResult:
     latency_ms: float      # Performance metric
     cost_usd: float        # Money tracking
 ```
-
-### Interview Talking Point
-> "I used the Strategy Pattern here - the abstract LLMClient defines the interface, and each provider is a concrete strategy. This makes adding new providers trivial and enables the fallback chain."
 
 ---
 
@@ -195,10 +190,6 @@ def estimate_cost(self, input_tokens: int, output_tokens: int) -> float:
     
     return input_cost + output_cost
 ```
-
-### Interview Talking Point
-> "Each provider encapsulates its SDK and pricing. The cost tracking shows I understand production concerns - LLM costs can spiral quickly without monitoring."
-
 ---
 
 ## 4️⃣ Fallback Chain (`core/fallback.py`)
@@ -264,9 +255,6 @@ Request comes in
    Raise Error
 ```
 
-### Interview Talking Point
-> "The fallback chain provides high availability. If Groq has an outage, requests automatically go to Gemini. The attempts list provides observability - we can see which providers are having issues."
-
 ---
 
 ## 5️⃣ Product Definitions (`core/products.py`)
@@ -328,9 +316,6 @@ system_prompt="... 🔴 Critical, 🟡 Important ..."
 
 # Enables A/B testing: Which version gets better user feedback?
 ```
-
-### Interview Talking Point
-> "Product differentiation comes from system prompts. The versioning enables A/B testing - we could test which prompt style gets better user ratings."
 
 ---
 
@@ -396,8 +381,6 @@ Development          Production
 └──────────┘        └──────────┘
 ```
 
-### Interview Talking Point
-> "I used the Repository Pattern - the abstract SessionStorage lets us swap implementations without changing business logic. In dev we use memory, in prod we use Redis."
 
 ---
 
@@ -490,9 +473,6 @@ def test_completion(mock_chain):
     assert response.status_code == 200
 ```
 
-### Interview Talking Point
-> "FastAPI's dependency injection makes the code testable. In tests, I inject mock LLM clients so tests run fast without hitting real APIs."
-
 ---
 
 ## 8️⃣ Application Lifecycle (`main.py`)
@@ -519,9 +499,6 @@ async def lifespan(app: FastAPI):
     # SHUTDOWN - runs when stopping
     logger.info("API shutting down")
 ```
-
-### Interview Talking Point
-> "The lifespan context manager ensures resources are properly initialized before handling requests and cleaned up on shutdown. This is important for production reliability."
 
 ---
 
@@ -586,24 +563,6 @@ def client(mock_client):
 
 ---
 
-## 💬 Interview Questions You Can Now Answer
-
-1. **"How do you handle LLM provider outages?"**
-   > "I implemented a fallback chain that automatically tries the next provider on failure."
-
-2. **"How do you track LLM costs?"**
-   > "Each provider implements cost estimation based on token counts. Every response includes the cost."
-
-3. **"How would you add a new LLM provider?"**
-   > "Create a new class that inherits from LLMClient and implements the abstract methods. No changes to existing code."
-
-4. **"How do you test code that calls external APIs?"**
-   > "I use dependency injection to mock the LLM client in tests. Tests run fast without real API calls."
-
-5. **"How do you manage configuration?"**
-   > "Pydantic Settings loads from environment variables with type validation. Single source of truth."
-
----
 
 ## 🚀 Next: Run It Locally!
 
