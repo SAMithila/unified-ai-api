@@ -4,7 +4,9 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+![Demo](assets/swigger-ui.png)
 ![Demo](assets/demo-ui.1.png)
+![Demo](assets/demo-ui.2.png)
 
 
 > **One API, Multiple AI Products** — A unified gateway for LLM-powered applications with automatic failover, session management, and cost tracking.
